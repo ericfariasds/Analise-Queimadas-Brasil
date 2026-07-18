@@ -10,13 +10,13 @@ from sqlalchemy.engine import Engine
 _ENV_PATH = Path(__file__).resolve().parent / ".env"
 load_dotenv(dotenv_path=_ENV_PATH if _ENV_PATH.exists() else None)
  
-MYSQL_USER = os.getenv("MYSQL_USER", "root")
-MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "")
-MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost")
-MYSQL_PORT = os.getenv("MYSQL_PORT", "3306")
-MYSQL_DATABASE = os.getenv("MYSQL_DATABASE", "db_queimadas")
+DB_USER = os.getenv("DB_USER", "root")
+DB_PASSWORD = os.getenv("DB_PASSWORD", "")
+DB_HOST = os.getenv("DB_HOST", "localhost")
+DB_PORT = os.getenv("DB_PORT", "3306")
+DB_NAME = os.getenv("DB_NAME", "db_queimadas")
  
-_REQUIRED_VARS = ["MYSQL_USER", "MYSQL_PASSWORD", "MYSQL_HOST", "MYSQL_PORT", "MYSQL_DATABASE"]
+_REQUIRED_VARS = ["DB_USER", "DB_PASSWORD", "DB_HOST", "DB_PORT", "DB_NAME"]
 
 def _validar_env() -> None:
     """Falha cedo e com mensagem clara se o .env não estiver configurado."""
@@ -60,7 +60,7 @@ def get_engine(database: str | None = None) -> Engine:
     ----------
     database : str | None
         Nome do banco. Se None, conecta apenas no servidor (útil para
-        rodar CREATE DATABASE). Se omitido, usa MYSQL_DATABASE do .env.
+        rodar CREATE DATABASE). Se omitido, usa DB_DATABASE do .env.
  
     Raises
     ------
@@ -69,5 +69,5 @@ def get_engine(database: str | None = None) -> Engine:
     """
     _validar_env()
     db_part = database if database is not None else ""
-    url = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{db_part}"
+    url = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{db_part}"
     return create_engine(url, pool_pre_ping=True)
