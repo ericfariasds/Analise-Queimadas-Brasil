@@ -64,3 +64,4 @@ LEFT JOIN dim_local dl ON sq.pais = dl.pais
                        AND sq.estado = dl.estado 
                        AND sq.municipio = dl.municipio 
                        AND sq.bioma = dl.bioma;
+                       
